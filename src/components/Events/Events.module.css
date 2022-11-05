@@ -1,0 +1,57 @@
+.Events {
+	padding-top: 66px;
+	background-color: var(--primary);
+	min-height: 100vh;
+}
+
+.EventsContent {
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.EventList {
+	padding: 1rem;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 1rem;
+	align-items: flex-start;
+}
+
+.EventList > * {
+	width: 100%;
+}
+
+.DaySelector {
+	padding: 0;
+	display: flex;
+	flex-flow: row nowrap;
+	gap: 0.5rem;
+}
+
+.DaySelector > select {
+	margin: 0;
+	background: none;
+	border: none;
+	cursor: pointer;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	text-overflow: '';
+	display: inline-block;
+	text-align: center;
+	font-size: 10pt;
+	font-family: monospace;
+}
+
+.DaySelector > *:focus {
+	outline: none;
+}
+
+.StyledButton {
+	border: none;
+	background-color: var(--secondary);
+	font-family: monospace;
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+	width: auto;
+	cursor: pointer;
+}

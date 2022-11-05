@@ -1,0 +1,40 @@
+.Card {
+	background-color: white;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	display: flex;
+	flex-flow: column nowrap;
+	gap: 0.5rem;
+	align-items: flex-start;
+	position: relative;
+}
+
+.CardLabel {
+	background-color: var(--secondary);
+	display: inline-block;
+	padding: 0.5rem;
+	border-radius: 0.25rem;
+}
+
+.CardContent {
+	width: 100%;
+}
+
+.CardLabel > * {
+	margin: 0;
+}
+
+.CloseButton {
+	border: none;
+	background: none;
+	cursor: pointer;
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	padding: 0;
+}
+
+.CloseButton > span {
+	font-size: 1.5rem;
+	color: var(--secondary);
+}

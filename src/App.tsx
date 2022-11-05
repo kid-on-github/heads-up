@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { AuthProvider } from './components/AuthProvider/AuthProvider'
 import { RequireAuth } from './components/AuthProvider/RequireAuth'
 import { Header } from './components/Header/Header'
-import { Profile } from './components/Profile/Profile'
+import { Events } from './components/Events/Events'
 import { Home } from './components/Home/Home'
 
 function App() {
@@ -15,10 +15,10 @@ function App() {
 					<Routes>
 						<Route path='/' element={<Home />} />
 						<Route
-							path='/profile'
+							path='/events'
 							element={
 								<RequireAuth>
-									<Profile />
+									<Events />
 								</RequireAuth>
 							}
 						/>

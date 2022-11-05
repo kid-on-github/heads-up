@@ -1,0 +1,11 @@
+.TextArea {
+	width: 100%;
+	border: none;
+	font-size: 12pt;
+	flex-grow: 1;
+	resize: none;
+}
+
+.TextArea:focus {
+	outline: none;
+}

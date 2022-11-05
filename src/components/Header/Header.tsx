@@ -51,7 +51,7 @@ const UserDropdown: React.FunctionComponent<{ user: FirebaseUser }> = ({
 				</span>
 			</div>
 			<div className={styles.Dropdown}>
-				<Link to='/profile'>Profile</Link>
+				<Link to='/events'>Events</Link>
 				<button className={styles.SignOut} onClick={logOut}>
 					sign out
 				</button>
