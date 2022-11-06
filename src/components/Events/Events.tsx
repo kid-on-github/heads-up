@@ -3,6 +3,7 @@ import styles from './Events.module.css'
 import { Card, CardContent, CardLabel } from '../Card/Card'
 import TextArea from '../TextArea/TextArea'
 import useEventListData from './useEventsListData'
+import { months } from '../../utils/constants'
 
 export const Events = () => (
 	<div className={styles.Events}>
@@ -74,21 +75,6 @@ const DaySelector: FunctionComponent<{
 	day: number
 	setDate: ({ day, month }: { day: number; month: number }) => void
 }> = ({ month, day, setDate }) => {
-	const months: Record<string, number> = {
-		jan: 31,
-		feb: 28,
-		mar: 31,
-		apr: 30,
-		may: 31,
-		jun: 30,
-		jul: 31,
-		aug: 31,
-		sep: 30,
-		oct: 31,
-		nov: 30,
-		dec: 31,
-	}
-
 	const emptyArrayOfMonthLength = Array.from(
 		Array(months[Object.keys(months)[month - 1]] ?? 0).keys()
 	)

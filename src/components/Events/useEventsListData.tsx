@@ -1,9 +1,36 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { splitEventKey } from '../../utils/utils'
 
 const useEventListData = () => {
-	const [events, setEvents] = useState<Record<string, string>>({
-		'1:1:0': 'Event 1',
-	})
+	const [events, setEvents] = useState<Record<string, string>>({})
+
+	const APIGetEvents = async () => {
+		const response = await fetch('/api/events')
+		const data = await response.json()
+		return data
+	}
+
+	const APIPutEvent = async (
+		events: Record<string, Record<string, string>>
+	) => {
+		const response = await fetch('/api/events', {
+			method: 'PUT',
+			body: JSON.stringify(events),
+		})
+		return response
+	}
+
+	const APIDeleteEvent = async (eventKey: string) => {
+		const response = await fetch('/api/events', {
+			method: 'DELETE',
+			body: JSON.stringify([eventKey]),
+		})
+		return response
+	}
+
+	useEffect(() => {
+		APIGetEvents().then((data) => setEvents(data))
+	}, [])
 
 	const getNextKey = () => {
 		const keys = Object.keys(events)
@@ -14,7 +41,7 @@ const useEventListData = () => {
 		return maxKey + 1
 	}
 
-	const addEvent = () => {
+	const addEvent = async () => {
 		const key = `0:0:${getNextKey()}`
 		setEvents({
 			...events,
@@ -22,19 +49,17 @@ const useEventListData = () => {
 		})
 	}
 
-	const splitEventKey = (eventKey: string) => {
-		const [month, day, key] = eventKey.split(':')
-		return { month: Number(month), day: Number(day), key: Number(key) }
-	}
-
 	const updateEvent =
 		(oldEventKey: string) =>
 		(newEvent: { month: number; day: number; event: string }) => {
-			const { month: oldMonth, day: oldDay } = splitEventKey(oldEventKey)
+			const splitKey = splitEventKey(oldEventKey)
+
+			if (!splitKey) return
+
+			const { month: oldMonth, day: oldDay } = splitKey
 			const { month, day, event } = newEvent
 
 			const dayChanged = oldDay !== day || oldMonth !== month
-			const eventChanged = events[oldEventKey] !== event
 			const eventKey = dayChanged
 				? `${month}:${day}:${oldEventKey.split(':')[2]}`
 				: oldEventKey
@@ -44,22 +69,22 @@ const useEventListData = () => {
 
 				if (dayChanged) {
 					delete newEvents[oldEventKey]
-					newEvents[eventKey] = event
-				} else if (eventChanged) {
-					newEvents[eventKey] = event
 				}
+
+				newEvents[eventKey] = event
+				APIPutEvent({ [oldEventKey]: { [eventKey]: event } })
 
 				return newEvents
 			})
 		}
 
-	const deleteEvent = (oldEventKey: string) => () => {
+	const deleteEvent = (eventKey: string) => async () => {
 		setEvents((events) => {
 			const newEvents = { ...events }
-			delete newEvents[oldEventKey]
-
+			delete newEvents[eventKey]
 			return newEvents
 		})
+		await APIDeleteEvent(eventKey)
 	}
 
 	return { events, addEvent, updateEvent, deleteEvent }
