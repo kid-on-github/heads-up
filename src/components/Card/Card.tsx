@@ -3,7 +3,7 @@ import styles from './Card.module.css'
 
 const Card: FunctionComponent<{
 	children?: JSX.Element | JSX.Element[]
-	handleClose: () => void
+	handleClose?: () => void
 }> = ({ children, handleClose }) => {
 	return (
 		<div className={styles.Card}>

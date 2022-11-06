@@ -4,6 +4,7 @@ import { Card, CardContent, CardLabel } from '../Card/Card'
 import TextArea from '../TextArea/TextArea'
 import useEventListData from './useEventsListData'
 import { months } from '../../utils/constants'
+import { ReactComponent as Arrow } from './arrow.svg'
 
 export const Events = () => (
 	<div className={styles.Events}>
@@ -20,8 +21,8 @@ const EventList = () => {
 		return Number(a.split(':')[2]) - Number(b.split(':')[2])
 	})
 
-	return (
-		<div className={styles.EventList}>
+	const getEventCardList = () => (
+		<>
 			{eventsSortedByKey.map(([eventKey, event]) => {
 				const [month, day, key] = eventKey.split(':')
 				return (
@@ -35,6 +36,21 @@ const EventList = () => {
 					/>
 				)
 			})}
+		</>
+	)
+
+	const WelcomeCard = (
+		<Card>
+			<h1 className={styles.WelcomeMessage}>
+				Add your events, and we'll make sure you don't forget!
+			</h1>
+			<Arrow className={styles.Arrow} />
+		</Card>
+	)
+
+	return (
+		<div className={styles.EventList}>
+			{eventsSortedByKey.length > 0 ? getEventCardList() : WelcomeCard}
 
 			<button className={styles.StyledButton} onClick={addEvent}>
 				add event

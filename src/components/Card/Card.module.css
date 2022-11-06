@@ -16,11 +16,16 @@
 	border-radius: 0.25rem;
 }
 
+.CardLabel > * {
+	margin: 0;
+	font-weight: normal;
+}
+
 .CardContent {
 	width: 100%;
 }
 
-.CardLabel > * {
+.CardContent > * {
 	margin: 0;
 }
 
