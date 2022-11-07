@@ -1,24 +1,30 @@
 # MVP
 
-- Google Auth
-- Settings page / user API
+- Finish TODOs
+- Update header
+- Firebase token validation
+- Settings page / user API / onboarding page
+
 - SMS + email reminders
-- Card that explains what to do for users with no events
-- Deploy to prod
 - Paypal integration
+- Deploy to prod
+- Domain
+
 - Stupid simple home page
 - Logo
-- Domain
+- Card that explains what to do for users with no events
 - Fix page/header offset
 
 # 1.0
 
+- Reset password
+- Fix key collision issue
 - Better UI elements + animations
 - focused effects + keyboard navigation
-- Email / password auth
 - Better home page
 - Pagination on event listing
 - Sort events by date
+- Email verification
 
 # 2.0
 

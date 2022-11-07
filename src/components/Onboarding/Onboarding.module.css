@@ -1,0 +1,9 @@
+.Onboarding {
+	padding-top: 66px;
+	min-height: 100vh;
+}
+
+.OnboardingContent {
+	max-width: 600px;
+	margin: 2rem auto;
+}

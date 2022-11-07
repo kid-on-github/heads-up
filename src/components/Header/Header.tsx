@@ -1,37 +1,53 @@
 import { useContext } from 'react'
 import { Link } from 'react-router-dom'
 import { authContext } from '../AuthProvider/AuthProvider'
-import { logOut, signInWithGoogle } from '../../firebase/firebase'
-import { User as FirebaseUser } from 'firebase/auth'
+import { logOut } from '../../firebase/firebase'
 import { useState } from 'react'
 import styles from './Header.module.css'
+import { userContext } from '../UserProvider/UserProvider'
 
 export const Header = () => {
-	const user = useContext(authContext)
+	const auth = useContext(authContext)
 	return (
 		<div className={styles.Header}>
 			<span className={styles.Logo}>
 				<Link to='/'>Logo Here</Link>
 			</span>
-			{user ? (
-				<UserDropdown user={user} />
+			{auth ? (
+				<UserDropdown />
 			) : (
-				<button className={styles.SignIn} onClick={signInWithGoogle}>
-					Sign in with Google
-				</button>
+				<Link to={'/auth'} className={styles.SignIn}>
+					Register / Sign In
+				</Link>
 			)}
 		</div>
 	)
 }
 
-const UserDropdown: React.FunctionComponent<{ user: FirebaseUser }> = ({
-	user,
-}) => {
+const UserDropdown = () => {
 	const [dropdownVisible, setDropDownVisible] = useState(false)
 
 	const toggleDropDownVisibility = () => {
 		setDropDownVisible((curr) => !curr)
 	}
+
+	const { user } = useContext(userContext)
+
+	if (!user)
+		return (
+			<div
+				className={`${styles.DropdownWrapper} ${
+					dropdownVisible && styles.dropdownVisible
+				}`}
+				onClick={toggleDropDownVisibility}
+			>
+				<div className={styles.DropdownLabel}>
+					<button className={styles.SignOut} onClick={logOut}>
+						sign out
+					</button>
+				</div>
+			</div>
+		)
 
 	return (
 		<div
@@ -41,7 +57,7 @@ const UserDropdown: React.FunctionComponent<{ user: FirebaseUser }> = ({
 			onClick={toggleDropDownVisibility}
 		>
 			<div className={styles.DropdownLabel}>
-				<p>{user.displayName}</p>
+				<p>{user?.firstName}</p>
 				<span
 					className={`material-icons ${
 						dropdownVisible && styles.dropdownArrowRotated

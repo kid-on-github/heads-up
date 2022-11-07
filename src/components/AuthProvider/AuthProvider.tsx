@@ -1,29 +1,29 @@
 import { useState, useEffect, createContext } from 'react'
 import { auth } from '../../firebase/firebase'
 import React from 'react'
-import { User as FirebaseUser } from 'firebase/auth'
 
-//FirebaseUser
-export const authContext = createContext<FirebaseUser | null>(null)
+type authContextType = { uid: string; firebaseToken: string } | null
+
+export const authContext = createContext<authContextType>(null)
 
 export const AuthProvider: React.FunctionComponent<{
-	children: React.ReactNode
+	children: React.ReactNode | React.ReactNode[]
 }> = ({ children }) => {
-	const getUserFromLocalStorage = () => {
-		const user = localStorage.getItem('user')
-		return user ? JSON.parse(user) : {}
-	}
-
-	const [userState, setUserState] = useState(() => getUserFromLocalStorage())
+	const [authState, setAuthState] = useState<authContextType>(null)
 
 	useEffect(() => {
-		auth.onIdTokenChanged((user) => {
-			localStorage.setItem('user', JSON.stringify(user))
-			setUserState(user ? user : null)
+		auth.onIdTokenChanged(async (user) => {
+			if (user) {
+				const { uid } = user
+				const firebaseToken = await user.getIdToken()
+				setAuthState({ uid, firebaseToken })
+			} else {
+				setAuthState(null)
+			}
 		})
 	}, [])
 
 	return (
-		<authContext.Provider value={userState}> {children} </authContext.Provider>
+		<authContext.Provider value={authState}> {children} </authContext.Provider>
 	)
 }

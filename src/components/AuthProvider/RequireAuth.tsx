@@ -7,5 +7,5 @@ export const RequireAuth: React.FunctionComponent<{
 	children: React.ReactNode
 }> = ({ children }) => {
 	let user = useContext(authContext)
-	return <>{user ? children : <Navigate to='/' replace />}</>
+	return <>{user ? children : <Navigate to='/auth' replace />}</>
 }

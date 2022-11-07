@@ -1,0 +1,10 @@
+.AuthPage {
+	padding-top: 66px;
+	background-color: var(--primary);
+	min-height: 100vh;
+}
+
+.AuthPageContent {
+	max-width: 600px;
+	margin: 2rem auto;
+}
