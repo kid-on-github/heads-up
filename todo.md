@@ -4,6 +4,7 @@
 - Update header
 - Firebase token validation
 - Settings page / user API / onboarding page
+- Update event API to accept uid in key
 
 - SMS + email reminders
 - Paypal integration
@@ -25,9 +26,16 @@
 - Pagination on event listing
 - Sort events by date
 - Email verification
+- Phone verification
+
+# 1.1
+
+- Admin page
+- User impersonation
 
 # 2.0
 
+- Update email
 - CTRL + Z
 - Setting time zone + time for reminders
 - Upload CSVs
