@@ -1,15 +1,35 @@
 import styles from './Onboarding.module.css'
-// import { authContext } from '../AuthProvider/AuthProvider'
 import { useContext, useState } from 'react'
 import { userContext } from '../UserProvider/UserProvider'
 import { Navigate } from 'react-router-dom'
+import { UserType } from '../../utils/constants'
 
 export const Onboarding = () => {
 	const { user, updateUserState } = useContext(userContext)
+	const [firstNameState, setFirstNameState] = useState(user?.firstName || '')
 
-	const [firstName, setFirstName] = useState(user?.firstName || '')
+	if (!user) {
+		return null
+	}
 
-	if (user) {
+	const updateUserInfo = async (newUserData: UserType) => {
+		const response = await fetch(`/api/${user?.uid}/user`, {
+			method: 'PUT',
+			body: JSON.stringify(newUserData),
+		})
+
+		if (response.status === 200) {
+			updateUserState(newUserData)
+		}
+	}
+
+	const { firstName, cellVerified, emailVerified } = user
+
+	// TODO: require contact verification
+	const userContactVerified = cellVerified || emailVerified || true
+	const userIsOnboarded = firstName && userContactVerified
+
+	if (userIsOnboarded) {
 		return <Navigate to='/events' replace />
 	}
 
@@ -19,10 +39,14 @@ export const Onboarding = () => {
 				<h1>User Onboarding</h1>
 				<input
 					type='text'
-					value={firstName}
-					onChange={(e) => setFirstName(e.target.value)}
+					value={firstNameState}
+					onChange={(e) => setFirstNameState(e.target.value)}
 				/>
-				<button onClick={() => updateUserState({ firstName })}>save</button>
+				<button
+					onClick={() => updateUserInfo({ ...user, firstName: firstNameState })}
+				>
+					save
+				</button>
 			</div>
 		</div>
 	)

@@ -26,7 +26,7 @@ The starter includes the following features:
 
 1. Install dependencies with `npm install`.
 2. Copy the `firebase/config.example.ts` file to `firebase/config.ts` and fill out the required fields (these fields come from your Firebase project).
-3. Run the project with `npx wrangler pages dev -- npx react-scripts start`.
+3. Run the project with `npx wrangler pages dev --kv Events Users -- npx react-scripts start`.
 
 The frontend can be accessed by going to [http://localhost:8788/](http://localhost:8788/).
 

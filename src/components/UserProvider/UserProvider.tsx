@@ -2,19 +2,11 @@ import { useState, useEffect, createContext, useContext } from 'react'
 import { auth } from '../../firebase/firebase'
 import React from 'react'
 import { authContext } from '../AuthProvider/AuthProvider'
-
-type userType = {
-	firstName: string
-	birthday?: string
-	email?: string
-	emailVerified?: boolean
-	phone?: string
-	phoneVerified?: boolean
-} | null
+import { UserType } from '../../utils/constants'
 
 type userContextType = {
-	user: userType
-	updateUserState: (newState: userType) => void
+	user: UserType | null
+	updateUserState: (newState: UserType) => void
 }
 
 export const userContext = createContext<userContextType>({
@@ -25,9 +17,9 @@ export const userContext = createContext<userContextType>({
 export const UserProvider: React.FunctionComponent<{
 	children: React.ReactNode | React.ReactNode[]
 }> = ({ children }) => {
-	const [user, setUser] = useState<userType>(null)
+	const [user, setUser] = useState<UserType | null>(null)
 
-	const updateUserState = (newState: userType) => {
+	const updateUserState = (newState: UserType) => {
 		setUser(newState)
 		// TODO: send new state to kv
 	}
@@ -37,9 +29,10 @@ export const UserProvider: React.FunctionComponent<{
 	const getUserState = async () => {
 		if (authState) {
 			const { uid, firebaseToken } = authState
-
-			// TODO: get user data from kv
-			// TODO: setUserState()
+			// TODO: send firebaseToken in the following request
+			const response = await fetch(`/api/${uid}/user`)
+			const user = JSON.parse(await response.json())
+			setUser(user)
 		} else {
 			setUser(null)
 		}

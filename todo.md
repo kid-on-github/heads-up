@@ -15,6 +15,10 @@
 - Logo
 - Card that explains what to do for users with no events
 - Fix page/header offset
+- CSS variables
+
+- Investigate CF error: TypeError: Response body object should not be disturbed or locked (events PUT)
+- Change key to be random nonce instead
 
 # 1.0
 

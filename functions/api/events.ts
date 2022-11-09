@@ -1,8 +1,11 @@
 import { splitEventKey } from '../../src/utils/utils'
 import { months } from '../../src/utils/constants'
+import { BadRequest, OKResponse } from '../../function_utilities/StandardResponses'
 
 export async function onRequest({ request, env }) {
+	// TODO: JWT check
 	if (request.method === 'GET') {
+
 		const { keys } = await env.Events.list({ prefix: '' })
 		const events = {}
 
@@ -18,7 +21,7 @@ export async function onRequest({ request, env }) {
 		return new Response(JSON.stringify(events), { status: 200 })
 	}
 
-	return new Response('Bad Request', { status: 400 })
+	return BadRequest
 }
 
 const eventKeyIsValid = (eventKey: string) => {
@@ -52,6 +55,8 @@ const eventKeyIsValid = (eventKey: string) => {
 }
 
 export async function onRequestPut({ request, env }) {
+
+	// TODO: JWT check
 	const updatedEvents = await request.json()
 
 	const errors = []
@@ -77,7 +82,7 @@ export async function onRequestPut({ request, env }) {
 		return new Response(JSON.stringify(errors), { status: 400 })
 	}
 
-	return new Response('Success', { status: 200 })
+	return OKResponse
 }
 
 export async function onRequestDelete({ request, env }) {
@@ -100,5 +105,5 @@ export async function onRequestDelete({ request, env }) {
 		return new Response(JSON.stringify(errors), { status: 400 })
 	}
 
-	return new Response('Success', { status: 200 })
+	return OKResponse
 }

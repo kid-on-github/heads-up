@@ -12,3 +12,13 @@ export const months: Record<string, number> = {
 	nov: 30,
 	dec: 31,
 }
+
+export type UserType = {
+	uid: string
+	firstName?: string
+	email?: string
+	emailVerified?: boolean
+	cell?: string
+	cellVerified?: boolean
+	birthday?: string
+}
