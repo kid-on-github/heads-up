@@ -3,6 +3,7 @@ import { splitEventKey } from '../../utils/utils'
 import { authContext } from '../AuthProvider/AuthProvider'
 
 const useEventListData = () => {
+	// TODO: rewrite this hook to use useReducer
 	const [events, setEvents] = useState<Record<string, string>>({})
 	const auth = useContext(authContext)
 

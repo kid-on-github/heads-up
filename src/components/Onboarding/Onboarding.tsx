@@ -15,7 +15,7 @@ export const Onboarding = () => {
 	}
 
 	const updateUserInfo = async (newUserData: UserType) => {
-		const response = await fetch(`/api/${user?.uid}/user`, {
+		const response = await fetch(`/api/user`, {
 			method: 'PUT',
 			headers: {
 				Authorization: `Bearer ${auth?.firebaseToken}`,

@@ -1,8 +1,8 @@
 import { validAud, validIss } from './config'
 
-const defaultResponse: { valid: boolean; userId: string | null } = {
+const defaultResponse: { valid: boolean; uid: string | null } = {
 	valid: false,
-	userId: null,
+	uid: null,
 }
 
 export default async function verifyJWT(request, JWT_KV) {
@@ -48,14 +48,14 @@ export default async function verifyJWT(request, JWT_KV) {
 		return response
 	}
 
-	const { valid, userId } = await isValidJwtSignature(token, JWT_KV)
+	const { valid, uid } = await isValidJwtSignature(token, JWT_KV)
 
 	if (valid) {
 		response.valid = true
-		response.userId = userId
+		response.uid = uid
 	}
 
-	console.log('\nvalid:', valid, 'userId:', userId, '\n')
+	console.log('\nvalid:', valid, 'uid:', uid, '\n')
 	return response
 }
 
@@ -150,5 +150,5 @@ async function isValidJwtSignature(token, JWT_KV) {
 		data
 	)
 
-	return { valid, userId: token.payload.user_id }
+	return { valid, uid: token.payload.user_id }
 }
