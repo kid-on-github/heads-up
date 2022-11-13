@@ -6,46 +6,40 @@ import {
 import verifyJWT from '../../function_utilities/verifyJWT'
 import type { UserType } from '../../src/utils/constants'
 
-export async function onRequest({ request, env }) {
-	if (request.method === 'GET') {
-		// TODO: make suer uid is valid and matches JWT (after JWT verification)
+export async function onRequestGet({ request, env }) {
+	const { JWT_KV } = env
 
-		const { JWT_KV } = env
-
-		let { valid, uid } = await verifyJWT(request, JWT_KV)
-		if (!valid) {
-			return Unauthorized
-		}
-
-		const user = await env.Users.get(uid)
-
-		if (user) {
-			return new Response(JSON.stringify(user), { status: 200 })
-		} else {
-			const newUser: UserType = {
-				uid,
-				firstName: null,
-				email: null,
-				emailVerified: false,
-				cell: null,
-				cellVerified: false,
-				birthday: null,
-			}
-
-			const stringifiedUser = JSON.stringify(newUser)
-
-			await env.Users.put(uid, stringifiedUser)
-
-			return new Response(stringifiedUser, {
-				status: 200,
-				headers: {
-					'content-type': 'application/json;charset=UTF-8',
-				},
-			})
-		}
+	let { valid, uid } = await verifyJWT(request, JWT_KV)
+	if (!valid) {
+		return Unauthorized
 	}
 
-	return BadRequest
+	const user = await env.Users.get(uid)
+
+	if (user) {
+		return new Response(JSON.stringify(user), { status: 200 })
+	} else {
+		const newUser: UserType = {
+			uid,
+			firstName: null,
+			email: null,
+			emailVerified: false,
+			cell: null,
+			cellVerified: false,
+			birthday: null,
+		}
+
+		const stringifiedUser = JSON.stringify(newUser)
+
+		await env.Users.put(uid, stringifiedUser)
+
+		return new Response(stringifiedUser, {
+			status: 200,
+			headers: {
+				'content-type': 'application/json;charset=UTF-8',
+			},
+		})
+	}
 }
 
 export async function onRequestPut({ request, env }) {
@@ -56,7 +50,6 @@ export async function onRequestPut({ request, env }) {
 		return Unauthorized
 	}
 
-	// TODO: make sure the uid is valid and matches the token uid, also validate data, maybe put this in a try catch block
 	if (uid) {
 		const newUser = await request.json()
 

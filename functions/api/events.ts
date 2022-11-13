@@ -1,13 +1,9 @@
 import { splitEventKey } from '../../src/utils/utils'
 import { months } from '../../src/utils/constants'
-import {
-	BadRequest,
-	OK,
-	Unauthorized,
-} from '../../function_utilities/StandardResponses'
+import { OK, Unauthorized } from '../../function_utilities/StandardResponses'
 import verifyJWT from '../../function_utilities/verifyJWT'
 
-export async function onRequest({ request, env }) {
+export async function onRequestGet({ request, env }) {
 	const { JWT_KV } = env
 
 	let { valid } = await verifyJWT(request, JWT_KV)
@@ -15,23 +11,19 @@ export async function onRequest({ request, env }) {
 		return Unauthorized
 	}
 
-	if (request.method === 'GET') {
-		const { keys } = await env.Events.list({ prefix: '' })
-		const events = {}
+	const { keys } = await env.Events.list({ prefix: '' })
+	const events = {}
 
-		if (keys.length > 0) {
-			await Promise.all(
-				keys.map(async ({ name: key }): Promise<void> => {
-					const value = await env.Events.get(`${key}`)
-					events[key] = value
-				})
-			)
-		}
-
-		return new Response(JSON.stringify(events), { status: 200 })
+	if (keys.length > 0) {
+		await Promise.all(
+			keys.map(async ({ name: key }): Promise<void> => {
+				const value = await env.Events.get(`${key}`)
+				events[key] = value
+			})
+		)
 	}
 
-	return BadRequest
+	return new Response(JSON.stringify(events), { status: 200 })
 }
 
 const eventKeyIsValid = (eventKey: string) => {
