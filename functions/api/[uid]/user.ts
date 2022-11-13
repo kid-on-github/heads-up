@@ -1,8 +1,5 @@
 import type { UserType } from '../../../src/utils/constants'
-import {
-	BadRequest,
-	OKResponse,
-} from '../../../function_utilities/StandardResponses'
+import { BadRequest, OK } from '../../../function_utilities/StandardResponses'
 
 export async function onRequest({ request, env, params }) {
 	const { uid } = params
@@ -49,7 +46,7 @@ export async function onRequestPut({ request, env, params }) {
 
 		await env.Users.put(uid, JSON.stringify(newUser))
 
-		return OKResponse
+		return OK
 	}
 
 	return BadRequest

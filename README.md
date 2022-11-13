@@ -21,7 +21,7 @@ The starter includes the following features:
 
 1. Create a new Firebase project.
 2. Make sure to enable the Google sign-in method in the Firebase console.
-
+3. Make sure to update the config in `function_utilities` and save it without the `example`.
 ### Run the project locally
 
 1. Install dependencies with `npm install`.
