@@ -1,11 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { splitEventKey } from '../../utils/utils'
+import { authContext } from '../AuthProvider/AuthProvider'
 
 const useEventListData = () => {
 	const [events, setEvents] = useState<Record<string, string>>({})
+	const auth = useContext(authContext)
 
 	const APIGetEvents = async () => {
-		const response = await fetch('/api/events')
+		const response = await fetch('/api/events', {
+			headers: {
+				Authorization: `Bearer ${auth?.firebaseToken}`,
+			},
+		})
 		const data = await response.json()
 		return data
 	}
@@ -15,6 +21,9 @@ const useEventListData = () => {
 	) => {
 		const response = await fetch('/api/events', {
 			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${auth?.firebaseToken}`,
+			},
 			body: JSON.stringify(events),
 		})
 		return response
@@ -23,6 +32,9 @@ const useEventListData = () => {
 	const APIDeleteEvent = async (eventKey: string) => {
 		const response = await fetch('/api/events', {
 			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${auth?.firebaseToken}`,
+			},
 			body: JSON.stringify([eventKey]),
 		})
 		return response

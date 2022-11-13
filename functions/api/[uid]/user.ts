@@ -1,11 +1,23 @@
+import {
+	BadRequest,
+	OK,
+	Unauthorized,
+} from '../../../function_utilities/StandardResponses'
+import verifyJWT from '../../../function_utilities/verifyJWT'
 import type { UserType } from '../../../src/utils/constants'
-import { BadRequest, OK } from '../../../function_utilities/StandardResponses'
 
 export async function onRequest({ request, env, params }) {
-	const { uid } = params
-
 	if (request.method === 'GET') {
 		// TODO: make suer uid is valid and matches JWT (after JWT verification)
+
+		const { JWT_KV } = env
+
+		let { valid } = await verifyJWT(request, JWT_KV)
+		if (!valid) {
+			return Unauthorized
+		}
+
+		const { uid } = params
 		const user = await env.Users.get(uid)
 
 		if (user) {
@@ -38,6 +50,13 @@ export async function onRequest({ request, env, params }) {
 }
 
 export async function onRequestPut({ request, env, params }) {
+	const { JWT_KV } = env
+
+	let { valid } = await verifyJWT(request, JWT_KV)
+	if (!valid) {
+		return Unauthorized
+	}
+
 	const { uid } = params
 
 	// TODO: make sure the uid is valid and matches the token uid, also validate data, maybe put this in a try catch block

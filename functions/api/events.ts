@@ -1,11 +1,21 @@
 import { splitEventKey } from '../../src/utils/utils'
 import { months } from '../../src/utils/constants'
-import { BadRequest, OKResponse } from '../../function_utilities/StandardResponses'
+import {
+	BadRequest,
+	OK,
+	Unauthorized,
+} from '../../function_utilities/StandardResponses'
+import verifyJWT from '../../function_utilities/verifyJWT'
 
 export async function onRequest({ request, env }) {
-	// TODO: JWT check
-	if (request.method === 'GET') {
+	const { JWT_KV } = env
 
+	let { valid } = await verifyJWT(request, JWT_KV)
+	if (!valid) {
+		return Unauthorized
+	}
+
+	if (request.method === 'GET') {
 		const { keys } = await env.Events.list({ prefix: '' })
 		const events = {}
 
@@ -55,8 +65,13 @@ const eventKeyIsValid = (eventKey: string) => {
 }
 
 export async function onRequestPut({ request, env }) {
+	const { JWT_KV } = env
 
-	// TODO: JWT check
+	let { valid } = await verifyJWT(request, JWT_KV)
+	if (!valid) {
+		return Unauthorized
+	}
+
 	const updatedEvents = await request.json()
 
 	const errors = []
@@ -82,10 +97,17 @@ export async function onRequestPut({ request, env }) {
 		return new Response(JSON.stringify(errors), { status: 400 })
 	}
 
-	return OKResponse
+	return OK
 }
 
 export async function onRequestDelete({ request, env }) {
+	const { JWT_KV } = env
+
+	let { valid } = await verifyJWT(request, JWT_KV)
+	if (!valid) {
+		return Unauthorized
+	}
+
 	const eventsToDelete = await request.json()
 	const errors = []
 
@@ -105,5 +127,5 @@ export async function onRequestDelete({ request, env }) {
 		return new Response(JSON.stringify(errors), { status: 400 })
 	}
 
-	return OKResponse
+	return OK
 }

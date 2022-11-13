@@ -29,8 +29,11 @@ export const UserProvider: React.FunctionComponent<{
 	const getUserState = async () => {
 		if (authState) {
 			const { uid, firebaseToken } = authState
-			// TODO: send firebaseToken in the following request
-			const response = await fetch(`/api/${uid}/user`)
+			const response = await fetch(`/api/${uid}/user`, {
+				headers: {
+					Authorization: `Bearer ${firebaseToken}`,
+				},
+			})
 			const user = JSON.parse(await response.json())
 			setUser(user)
 		} else {

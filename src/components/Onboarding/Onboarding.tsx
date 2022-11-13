@@ -3,9 +3,11 @@ import { useContext, useState } from 'react'
 import { userContext } from '../UserProvider/UserProvider'
 import { Navigate } from 'react-router-dom'
 import { UserType } from '../../utils/constants'
+import { authContext } from '../AuthProvider/AuthProvider'
 
 export const Onboarding = () => {
 	const { user, updateUserState } = useContext(userContext)
+	const auth = useContext(authContext)
 	const [firstNameState, setFirstNameState] = useState(user?.firstName || '')
 
 	if (!user) {
@@ -15,6 +17,9 @@ export const Onboarding = () => {
 	const updateUserInfo = async (newUserData: UserType) => {
 		const response = await fetch(`/api/${user?.uid}/user`, {
 			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${auth?.firebaseToken}`,
+			},
 			body: JSON.stringify(newUserData),
 		})
 

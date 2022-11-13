@@ -1,9 +1,7 @@
 # MVP
 
-- Firebase token validation
-- Settings page / user API / onboarding page
-- Update event API to accept uid in key
 - Stop passing the uid, just get it data from the token
+- Settings page / user API / onboarding page
 - Update header
 - Add nonce to kv keys
 - Login page: if the user doesn't exist, ask them to type their email again to register? I think we should change something, the design seems confusing
